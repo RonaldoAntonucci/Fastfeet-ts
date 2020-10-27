@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import CreateUserService from '../../../services/CreateUserService';
 
-import IUser from '../../../models/IUser';
+import IUser from '../../../models/UserModel';
 
 export default class UsersController {
   public async create(

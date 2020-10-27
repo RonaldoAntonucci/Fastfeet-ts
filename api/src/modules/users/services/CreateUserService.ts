@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import IUser from '../models/IUser';
+import IUser from '../models/UserModel';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequestDTO {

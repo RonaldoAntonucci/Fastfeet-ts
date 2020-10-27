@@ -6,10 +6,10 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
-import IUser from '../../../models/IUser';
+import UserModel from '../../../models/UserModel';
 
 @Entity('users')
-export default class User implements IUser {
+export default class User extends UserModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

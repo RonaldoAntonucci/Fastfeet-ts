@@ -1,4 +1,4 @@
-export default interface IUser {
+export default class UserModel {
   id?: string;
 
   name: string;
