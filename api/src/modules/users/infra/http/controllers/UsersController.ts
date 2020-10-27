@@ -1,13 +1,16 @@
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
 
+import ICreateUserRequestDTO from '../../../apiRequests/ICreateUserRequestDTO';
 import CreateUserService from '../../../services/CreateUserService';
 
 import IUser from '../../../models/UserModel';
 
+type ICreateRequest = Request<unknown, unknown, ICreateUserRequestDTO>;
+
 export default class UsersController {
   public async create(
-    request: Request,
+    request: ICreateRequest,
     response: Response,
   ): Promise<Response<IUser>> {
     const { name, email, cpf, password } = request.body;
