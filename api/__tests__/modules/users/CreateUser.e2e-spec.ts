@@ -22,7 +22,9 @@ describe('Create Users - e2e', () => {
   it('should be able to create a new User. - e2e', async () => {
     const usersAttrs = FakeUserAttrs();
 
-    const response = await request(app.http()).post('/').send(usersAttrs);
+    const response = await request(app.http())
+      .post('/')
+      .send({ ...usersAttrs, passwordConfirmation: usersAttrs.password });
 
     expect(response.status).toBe(200);
 
@@ -68,7 +70,9 @@ describe('Create Users - e2e', () => {
     });
     await usersRepo.save(userExists);
 
-    const response = await request(app.http()).post('/').send(usersAttrs);
+    const response = await request(app.http())
+      .post('/')
+      .send({ ...usersAttrs, passwordConfirmation: usersAttrs.password });
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('status', 'error');
@@ -92,7 +96,9 @@ describe('Create Users - e2e', () => {
     });
     await usersRepo.save(userExists);
 
-    const response = await request(app.http()).post('/').send(usersAttrs);
+    const response = await request(app.http())
+      .post('/')
+      .send({ ...usersAttrs, passwordConfirmation: usersAttrs.password });
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('status', 'error');
@@ -104,6 +110,18 @@ describe('Create Users - e2e', () => {
     const count = await usersRepo.count();
 
     expect(count).toBe(1);
+  });
+
+  it('should no be able to create a new User without passwordConfirmation. -e2e', async () => {
+    const usersAttrs = FakeUserAttrs();
+
+    const response = await request(app.http()).post('/').send(usersAttrs);
+
+    expect(response.status).toBe(400);
+
+    const count = await usersRepo.count();
+
+    expect(count).toBe(0);
   });
 
   beforeEach(async () => {

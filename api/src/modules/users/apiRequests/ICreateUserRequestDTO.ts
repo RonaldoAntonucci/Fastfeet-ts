@@ -3,4 +3,5 @@ export default interface ICreateUserRequestDTO {
   email: string;
   cpf: string;
   password: string;
+  passwordConfirmation: string;
 }
