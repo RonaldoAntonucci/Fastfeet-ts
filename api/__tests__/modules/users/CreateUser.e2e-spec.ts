@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'express-async-errors';
 import request from 'supertest';
 
 import { UsersRouter } from '@modules/users';
@@ -55,6 +56,54 @@ describe('Create Users - e2e', () => {
       'createdAt',
       new Date(newUser.createdAt),
     );
+  });
+
+  it('should no be able to create a new User if EMAIL is already in use. -e2e', async () => {
+    const usersAttrs = FakeUserAttrs();
+
+    const userExists = usersRepo.create({
+      ...FakeUserAttrs(),
+      email: usersAttrs.email,
+      role: 'user',
+    });
+    await usersRepo.save(userExists);
+
+    const response = await request(app.http()).post('/').send(usersAttrs);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('status', 'error');
+    expect(response.body).toHaveProperty(
+      'message',
+      'This email is already in use.',
+    );
+
+    const count = await usersRepo.count();
+
+    expect(count).toBe(1);
+  });
+
+  it('should no be able to create a new User if CPF is already in use. -e2e', async () => {
+    const usersAttrs = FakeUserAttrs();
+
+    const userExists = usersRepo.create({
+      ...FakeUserAttrs(),
+      cpf: usersAttrs.cpf,
+      role: 'user',
+    });
+    await usersRepo.save(userExists);
+
+    const response = await request(app.http()).post('/').send(usersAttrs);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('status', 'error');
+    expect(response.body).toHaveProperty(
+      'message',
+      'This cpf is already in use.',
+    );
+
+    const count = await usersRepo.count();
+
+    expect(count).toBe(1);
   });
 
   beforeEach(async () => {
