@@ -24,10 +24,15 @@ export default class CreateUserService {
     cpf,
     password,
   }: IRequestDTO): Promise<IUser> {
-    const emailInUse = await this.usersRepository.findByEmail(email);
+    const emailInUse = this.usersRepository.findByEmail(email);
+    const cpfInUse = this.usersRepository.findByCpf(cpf);
 
-    if (emailInUse) {
+    if (await emailInUse) {
       throw new ServiceError('This email is already in use.');
+    }
+
+    if (await cpfInUse) {
+      throw new ServiceError('This cpf is already in use.');
     }
 
     const user = await this.usersRepository.create({

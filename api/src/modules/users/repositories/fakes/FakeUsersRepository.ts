@@ -20,4 +20,12 @@ export default class FakeUsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  public async findByCpf(cpf: string): Promise<UserModel> {
+    const user = new UserModel();
+
+    user.cpf = cpf;
+
+    return user;
+  }
 }

@@ -5,4 +5,6 @@ export default interface IUsersRepository {
   create(data: ICreateUsersDTO): Promise<UserModel>;
 
   findByEmail(email: string): Promise<UserModel | undefined>;
+
+  findByCpf(cpf: string): Promise<UserModel | undefined>;
 }
