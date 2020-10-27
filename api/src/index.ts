@@ -1,5 +1,5 @@
-import Routes from '@shared/infra/http/routes/index.routes';
 import App from './app';
+import Routes from './shared/infra/http/routes/index.routes';
 
 const app = new App();
 

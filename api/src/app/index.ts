@@ -1,6 +1,8 @@
+import './bootstrap';
 import { Router, Express } from 'express';
 
 import Server from '@shared/infra/http/server';
+import Database from '@shared/infra/typeorm';
 
 interface iStartOpts {
   routes?: Router | [Router];
@@ -9,11 +11,21 @@ interface iStartOpts {
 export default class App {
   private server: Server;
 
+  protected database: Database;
+
   public async start(startOpts: iStartOpts): Promise<void> {
+    this.database = new Database();
+
+    await this.database.start();
+
     this.server = new Server({
       routes: startOpts.routes,
       jsonApi: true,
     });
+  }
+
+  public async stop(): Promise<void> {
+    await this.database.stop();
   }
 
   public listen(port: number): void {
