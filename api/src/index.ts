@@ -1,9 +1,6 @@
-import express from 'express';
+import Routes from '@shared/infra/http/routes/index.routes';
+import App from './app';
 
-const app = express();
+const app = new App();
 
-app.get('/', (_req, res) => {
-  res.json({ ok: 'ok' });
-});
-
-app.listen(3333);
+app.start({ routes: Routes }).then(() => app.listen(3333));
