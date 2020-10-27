@@ -3,4 +3,6 @@ import ICreateUsersDTO from '../dtos/ICreateUserDTO';
 
 export default interface IUsersRepository {
   create(data: ICreateUsersDTO): Promise<UserModel>;
+
+  findByEmail(email: string): Promise<UserModel | undefined>;
 }

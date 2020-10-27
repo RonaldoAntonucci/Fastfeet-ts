@@ -1,5 +1,8 @@
 import Chance from 'chance';
+import AppError from 'shared/errors/AppError';
 
-export const Faker = Chance();
+const Faker = Chance();
 
-export default { Faker };
+const ServiceError = AppError;
+
+export { Faker, ServiceError };

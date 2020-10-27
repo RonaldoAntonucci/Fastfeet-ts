@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe';
+import { ServiceError } from '../imports';
 
 import IUser from '../models/UserModel';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -23,6 +24,12 @@ export default class CreateUserService {
     cpf,
     password,
   }: IRequestDTO): Promise<IUser> {
+    const emailInUse = await this.usersRepository.findByEmail(email);
+
+    if (emailInUse) {
+      throw new ServiceError('This email is already in use.');
+    }
+
     const user = await this.usersRepository.create({
       name,
       email,
