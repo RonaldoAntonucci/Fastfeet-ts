@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { ServiceError } from '../imports';
 
 import IUser from '../models/UserModel';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequestDTO {
@@ -16,6 +17,9 @@ export default class CreateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async run({
@@ -35,11 +39,13 @@ export default class CreateUserService {
       throw new ServiceError('This cpf is already in use.');
     }
 
+    const hashedPassword = await this.hashProvider.generateHash(password);
+
     const user = await this.usersRepository.create({
       name,
       email,
       cpf,
-      password,
+      password: hashedPassword,
     });
 
     return user;

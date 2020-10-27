@@ -1,5 +1,6 @@
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
+import { classToClass } from 'class-transformer';
 
 import ICreateUserRequestDTO from '../../../apiRequests/ICreateUserRequestDTO';
 import CreateUserService from '../../../services/CreateUserService';
@@ -19,6 +20,6 @@ export default class UsersController {
 
     const user = await createUser.run({ name, email, cpf, password });
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }

@@ -3,6 +3,8 @@ import 'reflect-metadata';
 import { ServiceError } from '../imports';
 import FakeUserAttrs from '../models/fakes/FakeUserAttrs';
 import UserModel from '../models/UserModel';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import CreateUserService from './CreateUserService';
@@ -10,15 +12,18 @@ import CreateUserService from './CreateUserService';
 describe('Create User - unit', () => {
   let service: CreateUserService;
   let repo: IUsersRepository;
+  let hashProvider: IHashProvider;
 
   let createUser: jest.SpyInstance;
 
   let emailInUse: jest.SpyInstance;
   let cpfInUse: jest.SpyInstance;
+  let hashPassword: jest.SpyInstance;
 
   beforeEach(() => {
     repo = new FakeUsersRepository();
-    service = new CreateUserService(repo);
+    hashProvider = new FakeHashProvider();
+    service = new CreateUserService(repo, hashProvider);
 
     createUser = jest.spyOn(repo, 'create');
 
@@ -29,6 +34,8 @@ describe('Create User - unit', () => {
     cpfInUse = jest
       .spyOn(repo, 'findByCpf')
       .mockImplementation(async () => undefined);
+
+    hashPassword = jest.spyOn(hashProvider, 'generateHash');
   });
 
   it('should be able to creata a new User', async () => {
@@ -38,6 +45,7 @@ describe('Create User - unit', () => {
 
     expect(emailInUse).toBeCalledWith(userAttrs.email);
     expect(cpfInUse).toBeCalledWith(userAttrs.cpf);
+    expect(hashPassword).toBeCalledWith(userAttrs.password);
     expect(createUser).toBeCalledWith(userAttrs);
     expect(user).toBeInstanceOf(UserModel);
   });
@@ -55,6 +63,7 @@ describe('Create User - unit', () => {
 
     expect(emailInUse).toBeCalledWith(userAttrs.email);
     expect(cpfInUse).toBeCalledWith(userAttrs.cpf);
+    expect(hashPassword).not.toBeCalled();
     expect(createUser).not.toBeCalled();
   });
 
@@ -71,6 +80,7 @@ describe('Create User - unit', () => {
 
     expect(emailInUse).toBeCalledWith(userAttrs.email);
     expect(cpfInUse).toBeCalledWith(userAttrs.cpf);
+    expect(hashPassword).not.toBeCalled();
     expect(createUser).not.toBeCalled();
   });
 });
