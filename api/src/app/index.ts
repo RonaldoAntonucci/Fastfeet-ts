@@ -1,8 +1,10 @@
 import './bootstrap';
 import { Router, Express } from 'express';
+import { errors } from 'celebrate';
 
 import Server from '@shared/infra/http/server';
 import Database from '@shared/infra/typeorm';
+import ErrorHandler from '@shared/errors/Handler';
 
 interface iStartOpts {
   routes?: Router | [Router];
@@ -21,6 +23,7 @@ export default class App {
     this.server = new Server({
       routes: startOpts.routes,
       jsonApi: true,
+      handlers: [errors(), ErrorHandler],
     });
   }
 
