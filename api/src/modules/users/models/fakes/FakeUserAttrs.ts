@@ -2,7 +2,11 @@ import UserModel from '../UserModel';
 
 import { Faker } from '../../imports';
 
-export default (attrs: Partial<UserModel> = {}): Omit<UserModel, 'role'> => ({
+interface IFakeUser extends Omit<UserModel, 'role'> {
+  role?: 'user' | 'admin' | 'deliveryman';
+}
+
+export default (attrs: Partial<UserModel> = {}): IFakeUser => ({
   name: Faker.name(),
   email: Faker.email(),
   cpf: Faker.cpf(),

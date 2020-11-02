@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe';
+
 import { ServiceError } from '../imports';
 
 import IUser from '../models/UserModel';
