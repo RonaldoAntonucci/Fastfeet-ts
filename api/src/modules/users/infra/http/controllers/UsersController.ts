@@ -2,7 +2,7 @@ import { container } from 'tsyringe';
 import { Request, Response } from 'express';
 import { classToClass } from 'class-transformer';
 
-import ICreateUserRequestDTO from '../../../apiRequests/ICreateUserRequestDTO';
+import ICreateUserRequestDTO from '../../../apiRequests/ICreateUserRequest';
 import CreateUserService from '../../../services/CreateUserService';
 
 import IUser from '../../../models/UserModel';

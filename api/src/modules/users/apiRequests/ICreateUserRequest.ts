@@ -1,4 +1,4 @@
-export default interface ICreateUserRequestDTO {
+export default interface ICreateUserRequest {
   name: string;
   email: string;
   cpf: string;
