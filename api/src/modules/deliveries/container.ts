@@ -1,8 +1,9 @@
 import { container } from 'tsyringe';
 
-import DeliverymenRepository from '@modules/users/infra/typeorm/repositories/DeliverymenRepository';
+import { DeliverymenRepository } from './imports';
 
 import IDeliverymenRepository from './repositories/IDeliverymenRepository';
+
 import IDeliveriesRepository from './repositories/IDeliveriesRepository';
 import DeliveriesRepository from './infra/typeorm/repositories/DeliveriesRepository';
 
