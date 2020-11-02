@@ -13,7 +13,6 @@ export default class JsonWebTokenProvider implements IJwtProvider {
   ) {}
 
   sign({ payload = {}, subject }: ISignDTO): string {
-    console.log(this.usersConfig);
     const { secret, expiresIn } = this.usersConfig.jwt;
 
     const token = sign(payload, secret, { subject, expiresIn });
