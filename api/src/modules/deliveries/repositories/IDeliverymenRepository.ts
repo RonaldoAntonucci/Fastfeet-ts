@@ -1,3 +1,3 @@
 export default interface IDeliverymenRepository {
-  findById(id: string): Promise<{ id: string }>;
+  findById(id: string): Promise<{ id: string } | undefined>;
 }

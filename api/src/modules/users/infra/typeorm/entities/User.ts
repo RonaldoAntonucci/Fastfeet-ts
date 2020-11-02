@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -32,6 +33,6 @@ export default class User extends UserModel {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @UpdateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 }
