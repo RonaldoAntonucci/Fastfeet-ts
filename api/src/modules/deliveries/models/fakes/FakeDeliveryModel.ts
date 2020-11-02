@@ -1,6 +1,8 @@
+import Chance from 'chance';
+
 import DeliveryModel from '../DeliveryModel';
 
-import { Faker } from '../../imports';
+const Faker = Chance();
 
 export default (attrs: Partial<DeliveryModel> = {}): DeliveryModel => {
   const delivery: DeliveryModel = {

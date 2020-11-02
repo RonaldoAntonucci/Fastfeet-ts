@@ -1,15 +1,19 @@
-import UserModel from '../UserModel';
+import Chance from 'chance';
 
-import { Faker } from '../../imports';
+import UserModel from '../UserModel';
 
 interface IFakeUser extends Omit<UserModel, 'role'> {
   role?: 'user' | 'admin' | 'deliveryman';
 }
 
-export default (attrs: Partial<UserModel> = {}): IFakeUser => ({
-  name: Faker.name(),
-  email: Faker.email(),
-  cpf: Faker.cpf(),
-  password: Faker.string({ length: 16 }),
-  ...attrs,
-});
+const faker = Chance();
+
+export default (attrs: Partial<UserModel> = {}): IFakeUser => {
+  return {
+    name: faker.name(),
+    email: faker.email(),
+    cpf: faker.cpf(),
+    password: faker.string({ length: 16 }),
+    ...attrs,
+  };
+};
