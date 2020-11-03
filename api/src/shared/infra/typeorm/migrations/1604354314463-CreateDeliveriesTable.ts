@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export default class CreateDeliveriesTable1604354314463
   implements MigrationInterface {
@@ -11,6 +16,11 @@ export default class CreateDeliveriesTable1604354314463
         isPrimary: true,
         generationStrategy: 'uuid',
         default: 'uuid_generate_v4()',
+      },
+      {
+        name: 'deliveryman_id',
+        type: 'uuid',
+        isNullable: true,
       },
       {
         name: 'product',
@@ -72,11 +82,22 @@ export default class CreateDeliveriesTable1604354314463
     ],
   });
 
+  private foreignKey = new TableForeignKey({
+    name: 'DeliverymanDelivery',
+    columnNames: ['deliveryman_id'],
+    referencedColumnNames: ['id'],
+    referencedTableName: 'users',
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  });
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(this.table);
+    await queryRunner.createForeignKey(this.table, this.foreignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey(this.table, this.foreignKey);
     await queryRunner.dropTable(this.table);
   }
 }

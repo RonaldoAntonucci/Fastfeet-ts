@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { ServiceError } from '../imports';
 
 import DeliveryModel from '../models/DeliveryModel';
-import FakeDeliveryModel from '../models/fakes/FakeDeliveryModel';
+import FakeDeliveryAttrs from '../models/fakes/FakeDeliveryAttrs';
 import FakeDeliveriesRepository from '../repositories/fakes/FakeDeliveriesRepository';
 import FakeDeliverymenRepository from '../repositories/fakes/FakeDeliverymenRepository';
 import IDeliveriesRepository from '../repositories/IDeliveriesRepository';
@@ -28,7 +28,7 @@ describe('Create Delivery Service', () => {
   });
 
   it('should be able to create a new Delivery.', async () => {
-    const deliveryAttrs = FakeDeliveryModel();
+    const deliveryAttrs = FakeDeliveryAttrs();
     deliveryAttrs.deliverymanId = 'fakeDeliverymanId';
 
     checkDeliveryman.mockImplementationOnce(() => true);
@@ -44,7 +44,7 @@ describe('Create Delivery Service', () => {
   });
 
   it('should not be able to create a new Delivery without valid Deliveryman Id.', async () => {
-    const deliveryAttrs = FakeDeliveryModel();
+    const deliveryAttrs = FakeDeliveryAttrs();
     deliveryAttrs.deliverymanId = 'fakeDeliverymanId';
 
     checkDeliveryman.mockImplementationOnce(() => false);

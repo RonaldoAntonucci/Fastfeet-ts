@@ -87,7 +87,7 @@ describe('Create Session - e2e', () => {
     );
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await app.truncate();
   });
 

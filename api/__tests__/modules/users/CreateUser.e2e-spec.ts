@@ -124,7 +124,7 @@ describe('Create Users - e2e', () => {
     expect(count).toBe(0);
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await app.truncate();
   });
 

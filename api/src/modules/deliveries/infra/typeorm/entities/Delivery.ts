@@ -14,6 +14,9 @@ export default class Delivery extends DeliveryModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ name: 'deliveryman_id' })
+  deliverymanId: string;
+
   @Column()
   product: string;
 
