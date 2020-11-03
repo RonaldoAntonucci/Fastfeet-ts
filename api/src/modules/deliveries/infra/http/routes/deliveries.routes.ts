@@ -2,10 +2,16 @@ import { Router } from 'express';
 
 import DeliveriesController from '../controllers/DeliveriesController';
 
+import CreateDeliveryValidator from '../validators/CreateDeliveryValidator';
+
 const deliveriesRouter = Router();
 
 const deliveriesController = new DeliveriesController();
 
-deliveriesRouter.post('/', deliveriesController.create);
+deliveriesRouter.post(
+  '/',
+  CreateDeliveryValidator(),
+  deliveriesController.create,
+);
 
 export default deliveriesRouter;

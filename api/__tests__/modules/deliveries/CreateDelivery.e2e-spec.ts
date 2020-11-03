@@ -3,6 +3,7 @@ import 'express-async-errors';
 
 import request from 'supertest';
 import { getRepository, Repository } from 'typeorm';
+import { uuid } from 'uuidv4';
 
 import Delivery from '@modules/deliveries/infra/typeorm/entities/Delivery';
 import Deliveryman from '@modules/users/infra/typeorm/entities/Deliveryman';
@@ -49,6 +50,26 @@ describe('Create Delivery - e2e', () => {
     expect(delivery).toEqual(persistedDelivery);
 
     expect(await deliveriesRepo.count()).toBe(1);
+  });
+
+  it('should not be able to create a new Delivery without valid deliveryman id.', async () => {
+    const deliveryAttrs = FakeDeliveryAttrs({ deliverymanId: 'invalidUUID' });
+
+    const response = await request(app.http()).post('/').send(deliveryAttrs);
+
+    expect(response.status).toBe(400);
+
+    expect(await deliveriesRepo.count()).toBe(0);
+  });
+
+  it('should not be able to create a new Delivery if deliveryman not exists.', async () => {
+    const deliveryAttrs = FakeDeliveryAttrs({ deliverymanId: uuid() });
+
+    const response = await request(app.http()).post('/').send(deliveryAttrs);
+
+    expect(response.status).toBe(400);
+
+    expect(await deliveriesRepo.count()).toBe(0);
   });
 
   afterEach(async () => {
