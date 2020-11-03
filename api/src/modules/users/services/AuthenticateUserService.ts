@@ -43,7 +43,10 @@ export default class AuthenticateUserService {
       throw new ServiceError('Incorrect email/password combination.', 401);
     }
 
-    const token = this.jwtProvider.sign({ subject: user.id });
+    const token = this.jwtProvider.sign({
+      subject: user.id,
+      payload: { role: user.role },
+    });
 
     return {
       token,
