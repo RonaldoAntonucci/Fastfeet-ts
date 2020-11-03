@@ -37,7 +37,5 @@
     ".vscode",
     "tmp",
     "jest.config.js"
-  ],
-  "files": ["src/@types/index.d.ts"],
-  "include": ["src/**/*.ts","__tests__/**/*.ts"],
+  ]
 }
