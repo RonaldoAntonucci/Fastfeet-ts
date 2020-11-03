@@ -6,7 +6,7 @@
   "author": "Ronaldo Antonucci",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --no-notify src/index.ts",
     "start": "ts-node src/index.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
