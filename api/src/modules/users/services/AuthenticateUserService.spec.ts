@@ -57,7 +57,10 @@ describe('Authenticate User', () => {
       userAttrs.password,
       'hashedPassword',
     );
-    expect(checkGenerateJwt).toHaveBeenCalledWith({ subject: userAttrs.id });
+    expect(checkGenerateJwt).toHaveBeenCalledWith({
+      subject: userAttrs.id,
+      payload: { role: 'admin' },
+    });
   });
 
   it('should not be able to Authenticate with wrong email.', async () => {
