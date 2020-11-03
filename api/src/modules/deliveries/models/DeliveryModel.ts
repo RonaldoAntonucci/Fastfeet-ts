@@ -1,7 +1,11 @@
+import DeliverymanModel from './DeliverymanModel';
+
 export default class DeliveryModel {
   id?: string;
 
   deliverymanId?: string;
+
+  deliveryman?: DeliverymanModel;
 
   product: string;
 

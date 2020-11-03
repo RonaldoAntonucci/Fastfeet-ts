@@ -7,7 +7,7 @@ import Deliveryman from '../entities/Deliveryman';
 export default class DeliverymenRepository implements IDeliverymenRepository {
   private ormRepository = getRepository(Deliveryman);
 
-  private ormDeliveriesRepository = getRepository(Delivery);
+  // private ormDeliveriesRepository = getRepository(Delivery);
 
   public async findById(id: string): Promise<Deliveryman | undefined> {
     const deliveryman = this.ormRepository.findOne({ id, role: 'deliveryman' });
@@ -16,10 +16,11 @@ export default class DeliverymenRepository implements IDeliverymenRepository {
   }
 
   public async findDeliveries(deliverymanId: string): Promise<Delivery[]> {
-    const deliveries = await this.ormDeliveriesRepository.find({
-      deliverymanId,
-    });
+    const deliveryman = await this.ormRepository.findOne(
+      { id: deliverymanId },
+      { relations: ['deliveries'] },
+    );
 
-    return deliveries;
+    return deliveryman?.deliveries || [];
   }
 }

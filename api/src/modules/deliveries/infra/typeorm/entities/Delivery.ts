@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import DeliveryModel from '@modules/deliveries/models/DeliveryModel';
+import Deliveryman from './Deliveryman';
 
 @Entity('deliveries')
 export default class Delivery extends DeliveryModel {
@@ -16,6 +19,10 @@ export default class Delivery extends DeliveryModel {
 
   @Column({ name: 'deliveryman_id' })
   deliverymanId: string;
+
+  @ManyToOne(() => Deliveryman, deliveryman => deliveryman.deliveries)
+  @JoinColumn({ name: 'deliveryman_id' })
+  deliveryman: Deliveryman;
 
   @Column()
   product: string;
