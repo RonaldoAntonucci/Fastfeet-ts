@@ -11,7 +11,7 @@ const deliveriesRouter = Router();
 const deliveriesController = new DeliveriesController();
 
 deliveriesRouter.use(
-  EnsureAuthenticateMiddleware({ role: 'deliveryman' }) as RequestHandler,
+  EnsureAuthenticateMiddleware({ role: 'admin' }) as RequestHandler,
 );
 
 deliveriesRouter.post(

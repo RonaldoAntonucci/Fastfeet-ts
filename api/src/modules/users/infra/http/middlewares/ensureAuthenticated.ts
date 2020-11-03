@@ -42,7 +42,7 @@ export default (opts: IAuthOptions = {}) => (
     const { sub, role } = decoded;
 
     if (opts.role && opts.role !== role) {
-      throw new AppError('User without permission', 401);
+      throw new AppError('User without permission.', 401);
     }
 
     request.user = {
@@ -51,9 +51,9 @@ export default (opts: IAuthOptions = {}) => (
 
     return next();
   } catch (e) {
-    if (e.message === 'User without permission') {
+    if (e.message === 'User without permission.') {
       throw new AppError(e.message, 401);
     }
-    throw new AppError('Invalid JWT token', 401);
+    throw new AppError('Invalid JWT token.', 401);
   }
 };
