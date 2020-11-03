@@ -1,16 +1,10 @@
-import ListDeliverymanDeliveriesService from '@modules/deliveries/services/ListDeliverymanDeliveriesService';
 import { Request, Response } from 'express';
-import { container } from 'tsyringe';
 
-interface IAuthRequest extends Request {
-  user: { id: string };
-}
+import ListDeliverymanDeliveriesService from '@modules/deliveries/services/ListDeliverymanDeliveriesService';
+import container from '@modules/deliveries/container';
 
 export default class DeliverymanDeliveriesController {
-  public async index(
-    request: IAuthRequest,
-    response: Response,
-  ): Promise<Response> {
+  public async index(request: Request, response: Response): Promise<Response> {
     const { id: deliverymanId } = request.user;
 
     const listDeliverymanDeliveries = container.resolve(

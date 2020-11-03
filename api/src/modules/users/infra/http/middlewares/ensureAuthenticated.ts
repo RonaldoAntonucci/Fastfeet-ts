@@ -12,18 +12,18 @@ interface ITokenPayload extends Record<string, unknown> {
   role: string;
 }
 
-interface IAuthRequest extends Request {
-  user: {
-    id: string;
-  };
-}
+// interface IAuthRequest extends Request {
+//   user: {
+//     id: string;
+//   };
+// }
 
 interface IAuthOptions {
   role?: string;
 }
 
 export default (opts: IAuthOptions = {}) => (
-  request: IAuthRequest,
+  request: Request,
   _response: Response,
   next: NextFunction,
 ): void => {

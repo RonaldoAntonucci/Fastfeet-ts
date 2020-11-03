@@ -12,7 +12,7 @@ const deliveriesRouter = Router();
 const deliveriesController = new DeliveriesController();
 const deliverymanDeliveriesController = new DeliverymanDeliveriesController();
 
-deliveriesRouter.use(
+deliveriesRouter.get(
   '/me',
   EnsureAuthenticateMiddleware({ role: 'deliveryman' }) as RequestHandler,
   deliverymanDeliveriesController.index,

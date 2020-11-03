@@ -6,15 +6,15 @@ import { getRepository, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import Delivery from '@modules/deliveries/infra/typeorm/entities/Delivery';
-import Deliveryman from '@modules/users/infra/typeorm/entities/Deliveryman';
-import FakeDeliverymanAttrs from '@modules/users/models/fakes/FakeDeliverymanAttrs';
+import Deliveryman from '@modules/deliveries/infra/typeorm/entities/Deliveryman';
+import FakeDeliverymanAttrs from '@modules/deliveries/models/fakes/FakeDeliverymanAttrs';
 import FakeDeliveryAttrs from '@modules/deliveries/models/fakes/FakeDeliveryAttrs';
 import { DeliveriesRouter } from '@modules/deliveries';
 import { container } from 'tsyringe';
 import IJwtProvider from '@modules/users/providers/JwtProvider/models/IJwtProvider';
 import JsonWebTokenProvider from '@modules/users/providers/JwtProvider/implementations/JsonWebTokenProvider';
 import UsersConfig from '@modules/users/config/implementation';
-import DeliverymenRepository from '@modules/users/infra/typeorm/repositories/DeliverymenRepository';
+import DeliverymenRepository from '@modules/deliveries/infra/typeorm/repositories/DeliverymenRepository';
 import createToken from '../../util/createToken';
 import TestApp from '../../util/TestApp';
 

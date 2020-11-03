@@ -8,6 +8,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "baseUrl": "./src",
+    "rootDir": "./",
     "paths": {
       "@modules/*": [
         "modules/*"
@@ -24,7 +25,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true
+    "allowJs": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "typeRoots": ["src/@types","node_modules/@types"]
   },
   "exclude": [
     "coverage",
@@ -33,5 +37,7 @@
     ".vscode",
     "tmp",
     "jest.config.js"
-  ]
+  ],
+  "files": ["src/@types/index.d.ts"],
+  "include": ["src/**/*.ts","__tests__/**/*.ts"],
 }

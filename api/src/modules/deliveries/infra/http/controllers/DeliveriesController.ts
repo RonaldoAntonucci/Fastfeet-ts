@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { container } from 'tsyringe';
 
 import ICreateDeliveryRequest from '@modules/deliveries/apiRequests/ICreateDeliveryRequest';
 import CreateDeliveryService from '@modules/deliveries/services/CreateDeliveryService';
+import container from '../../../container';
 
 type ICreateRequest = Request<unknown, unknown, ICreateDeliveryRequest>;
 
