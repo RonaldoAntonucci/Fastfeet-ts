@@ -6,22 +6,21 @@ import { getRepository, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import Delivery from '@modules/deliveries/infra/typeorm/entities/Delivery';
-import Deliveryman from '@modules/deliveries/infra/typeorm/entities/Deliveryman';
-import FakeDeliverymanAttrs from '@modules/deliveries/models/fakes/FakeDeliverymanAttrs';
 import FakeDeliveryAttrs from '@modules/deliveries/models/fakes/FakeDeliveryAttrs';
 import { DeliveriesRouter } from '@modules/deliveries';
 import { container } from 'tsyringe';
 import IJwtProvider from '@modules/users/providers/JwtProvider/models/IJwtProvider';
 import JsonWebTokenProvider from '@modules/users/providers/JwtProvider/implementations/JsonWebTokenProvider';
 import UsersConfig from '@modules/users/config/implementation';
-import DeliverymenRepository from '@modules/deliveries/infra/typeorm/repositories/DeliverymenRepository';
+import User from '@modules/users/infra/typeorm/entities/User';
+import FakeUserAttrs from '@modules/users/models/fakes/FakeUserAttrs';
 import createToken from '../../util/createToken';
 import TestApp from '../../util/TestApp';
 
 describe('Create Delivery - e2e', () => {
   let app: TestApp;
   let deliveriesRepo: Repository<Delivery>;
-  let deliverymenRepo: Repository<Deliveryman>;
+  let deliverymenRepo: Repository<User>;
 
   let token: string;
 
@@ -30,7 +29,7 @@ describe('Create Delivery - e2e', () => {
     await app.start({ routes: DeliveriesRouter });
 
     deliveriesRepo = getRepository(Delivery);
-    deliverymenRepo = getRepository(Deliveryman);
+    deliverymenRepo = getRepository(User);
 
     container.registerSingleton('UsersConfig', UsersConfig);
 
@@ -39,13 +38,13 @@ describe('Create Delivery - e2e', () => {
       JsonWebTokenProvider,
     );
 
-    container.registerSingleton('DeliverymenRepository', DeliverymenRepository);
-
     token = createToken({ role: 'admin' });
   });
 
   it('should be able to create a new Delivery. - e2e', async () => {
-    const deliveryman = deliverymenRepo.create(FakeDeliverymanAttrs());
+    const deliveryman = deliverymenRepo.create(
+      FakeUserAttrs({ role: 'deliveryman' }),
+    );
     await deliverymenRepo.save(deliveryman);
 
     const deliveryAttrs = FakeDeliveryAttrs({ deliverymanId: deliveryman.id });

@@ -5,5 +5,11 @@ export default class DeliverymanModel {
 
   role: 'deliveryman';
 
+  name: string;
+
+  email: string;
+
+  cpf: string;
+
   deliveries?: DeliveryModel[];
 }

@@ -9,6 +9,15 @@ export default class Deliveryman extends DeliverymanModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  name: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ unique: true })
+  cpf: string;
+
   @Column({ enum: ['deliveryman'] })
   role: 'deliveryman';
 

@@ -6,7 +6,7 @@ import Server from '@shared/infra/http/server';
 import Database from '@shared/infra/typeorm';
 import ErrorHandler from '@shared/errors/Handler';
 
-interface iStartOpts {
+export interface iStartOpts {
   routes?: Router | [Router];
 }
 
