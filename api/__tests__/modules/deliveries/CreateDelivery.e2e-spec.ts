@@ -8,34 +8,36 @@ import { v4 as uuid } from 'uuid';
 import Delivery from '@modules/deliveries/infra/typeorm/entities/Delivery';
 import FakeDeliveryAttrs from '@modules/deliveries/models/fakes/FakeDeliveryAttrs';
 import { DeliveriesRouter } from '@modules/deliveries';
-import User from '@modules/users/infra/typeorm/entities/User';
-import FakeUserAttrs from '@modules/users/models/fakes/FakeUserAttrs';
+import Deliveryman from '@modules/deliveries/infra/typeorm/entities/Deliveryman';
+import FakeDeliverymanAttrs from '@modules/deliveries/models/fakes/FakeDeliverymanAttrs';
 import createToken from '../../util/createToken';
 import TestApp from '../../util/TestApp';
+import Factory, { IFactory } from '../../util/Factory';
 
 describe('Create Delivery - e2e', () => {
   let app: TestApp;
   let deliveriesRepo: Repository<Delivery>;
-  let deliverymenRepo: Repository<User>;
 
   let token: string;
+
+  let deliverymanFactory: IFactory<Deliveryman>;
 
   beforeAll(async () => {
     app = new TestApp();
     await app.start({ routes: DeliveriesRouter });
 
     deliveriesRepo = getRepository(Delivery);
-    deliverymenRepo = getRepository(User);
 
     token = createToken({ role: 'admin' });
+
+    deliverymanFactory = Factory<Deliveryman>(
+      'Deliveryman',
+      FakeDeliverymanAttrs,
+    );
   });
 
   it('should be able to create a new Delivery. - e2e', async () => {
-    const deliveryman = deliverymenRepo.create(
-      FakeUserAttrs({ role: 'deliveryman' }),
-    );
-    await deliverymenRepo.save(deliveryman);
-
+    const deliveryman = await deliverymanFactory.create();
     const deliveryAttrs = FakeDeliveryAttrs({ deliverymanId: deliveryman.id });
 
     const response = await request(app.http())

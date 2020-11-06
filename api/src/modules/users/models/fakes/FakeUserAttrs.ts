@@ -14,6 +14,7 @@ export default (attrs: Partial<UserModel> = {}): IFakeUser => {
     email: faker.email(),
     cpf: faker.cpf(),
     password: faker.string({ length: 16 }),
+    role: 'user',
     ...attrs,
   };
 };

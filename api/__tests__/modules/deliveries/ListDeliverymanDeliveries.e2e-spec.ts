@@ -53,8 +53,7 @@ describe('List Deliveryman Deliveries - e2e', () => {
   });
 
   afterEach(async () => {
-    await deliveriesFactory.clearAll();
-    await deliverymanFactory.clearAll();
+    await app.truncate();
   });
 
   afterAll(async () => {

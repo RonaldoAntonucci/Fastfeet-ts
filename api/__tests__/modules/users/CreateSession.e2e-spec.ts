@@ -2,19 +2,19 @@ import 'reflect-metadata';
 import 'express-async-errors';
 import request from 'supertest';
 
-import { getRepository, Repository } from 'typeorm';
-
 import User from '@modules/users/infra/typeorm/entities/User';
 import { SessionsRouter } from '@modules/users';
 import FakeUserAttrs from '@modules/users/models/fakes/FakeUserAttrs';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 import BCryptHashProvider from '@modules/users/providers/HashProvider/implementations/BCryptHashProvider';
 import TestApp from '../../util/TestApp';
+import Factory, { IFactory } from '../../util/Factory';
 
 describe('Create Session - e2e', () => {
   let app: TestApp;
-  let usersRepo: Repository<User>;
   let hashProvider: IHashProvider;
+
+  let usersFactory: IFactory<User>;
 
   beforeAll(async () => {
     app = new TestApp();
@@ -22,22 +22,19 @@ describe('Create Session - e2e', () => {
 
     hashProvider = new BCryptHashProvider();
 
-    usersRepo = getRepository(User);
+    usersFactory = Factory<User>('User', FakeUserAttrs);
   });
 
   it('should be able to create a new session(jwt) - e2e', async () => {
-    const userAttrs = FakeUserAttrs();
-    userAttrs.role = 'admin';
-
-    const user = usersRepo.create({
-      ...userAttrs,
-      password: await hashProvider.generateHash(userAttrs.password),
+    const adminPassword = '12345678';
+    const user = await usersFactory.create({
+      password: await hashProvider.generateHash(adminPassword),
+      role: 'admin',
     });
-    await usersRepo.save(user);
 
     const response = await request(app.http()).post('/').send({
-      email: userAttrs.email,
-      password: userAttrs.password,
+      email: user.email,
+      password: adminPassword,
     });
 
     expect(response.status).toBe(200);
@@ -49,7 +46,6 @@ describe('Create Session - e2e', () => {
 
   it('should not be able to create a new session if User email not exists.', async () => {
     const userAttrs = FakeUserAttrs();
-    userAttrs.role = 'admin';
 
     const response = await request(app.http()).post('/').send({
       email: userAttrs.email,
@@ -65,17 +61,10 @@ describe('Create Session - e2e', () => {
   });
 
   it('should not be able to create a new session with wrong password.', async () => {
-    const userAttrs = FakeUserAttrs();
-    userAttrs.role = 'admin';
-
-    const user = usersRepo.create({
-      ...userAttrs,
-      password: await hashProvider.generateHash(userAttrs.password),
-    });
-    await usersRepo.save(user);
+    const user = await usersFactory.create({ role: 'admin' });
 
     const response = await request(app.http()).post('/').send({
-      email: userAttrs.email,
+      email: user.email,
       password: 'wrongPassword',
     });
 

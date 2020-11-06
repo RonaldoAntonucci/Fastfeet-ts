@@ -7,20 +7,26 @@ import FakeUserAttrs from '@modules/users/models/fakes/FakeUserAttrs';
 import { getRepository, Repository } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
 import TestApp from '../../util/TestApp';
+import Factory, { IFactory } from '../../util/Factory';
 
 describe('Create Users - e2e', () => {
   let app: TestApp;
   let usersRepo: Repository<User>;
 
+  let usersFactory: IFactory<User>;
+
   beforeAll(async () => {
     app = new TestApp();
     await app.start({ routes: UsersRouter });
+
+    usersFactory = Factory<User>('User', FakeUserAttrs);
 
     usersRepo = getRepository(User);
   });
 
   it('should be able to create a new User. - e2e', async () => {
     const usersAttrs = FakeUserAttrs();
+    usersAttrs.role = undefined;
 
     const response = await request(app.http())
       .post('/')
@@ -63,12 +69,9 @@ describe('Create Users - e2e', () => {
   it('should no be able to create a new User if EMAIL is already in use. -e2e', async () => {
     const usersAttrs = FakeUserAttrs();
 
-    const userExists = usersRepo.create({
-      ...FakeUserAttrs(),
-      email: usersAttrs.email,
-      role: 'user',
-    });
-    await usersRepo.save(userExists);
+    await usersFactory.create({ email: usersAttrs.email });
+
+    usersAttrs.role = undefined;
 
     const response = await request(app.http())
       .post('/')
@@ -89,12 +92,8 @@ describe('Create Users - e2e', () => {
   it('should no be able to create a new User if CPF is already in use. -e2e', async () => {
     const usersAttrs = FakeUserAttrs();
 
-    const userExists = usersRepo.create({
-      ...FakeUserAttrs(),
-      cpf: usersAttrs.cpf,
-      role: 'user',
-    });
-    await usersRepo.save(userExists);
+    await usersFactory.create({ cpf: usersAttrs.cpf });
+    usersAttrs.role = undefined;
 
     const response = await request(app.http())
       .post('/')
@@ -114,6 +113,7 @@ describe('Create Users - e2e', () => {
 
   it('should no be able to create a new User without passwordConfirmation. -e2e', async () => {
     const usersAttrs = FakeUserAttrs();
+    usersAttrs.role = undefined;
 
     const response = await request(app.http()).post('/').send(usersAttrs);
 
