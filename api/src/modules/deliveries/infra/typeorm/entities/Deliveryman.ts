@@ -18,6 +18,9 @@ export default class Deliveryman extends DeliverymanModel {
   @Column({ unique: true })
   cpf: string;
 
+  @Column()
+  password: string;
+
   @Column({ enum: ['deliveryman'] })
   role: 'deliveryman';
 

@@ -12,4 +12,6 @@ export default class DeliverymanModel {
   cpf: string;
 
   deliveries?: DeliveryModel[];
+
+  password: string;
 }

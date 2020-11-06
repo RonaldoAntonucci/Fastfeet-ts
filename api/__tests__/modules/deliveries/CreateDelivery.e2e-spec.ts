@@ -8,10 +8,6 @@ import { v4 as uuid } from 'uuid';
 import Delivery from '@modules/deliveries/infra/typeorm/entities/Delivery';
 import FakeDeliveryAttrs from '@modules/deliveries/models/fakes/FakeDeliveryAttrs';
 import { DeliveriesRouter } from '@modules/deliveries';
-import { container } from 'tsyringe';
-import IJwtProvider from '@modules/users/providers/JwtProvider/models/IJwtProvider';
-import JsonWebTokenProvider from '@modules/users/providers/JwtProvider/implementations/JsonWebTokenProvider';
-import UsersConfig from '@modules/users/config/implementation';
 import User from '@modules/users/infra/typeorm/entities/User';
 import FakeUserAttrs from '@modules/users/models/fakes/FakeUserAttrs';
 import createToken from '../../util/createToken';
@@ -30,13 +26,6 @@ describe('Create Delivery - e2e', () => {
 
     deliveriesRepo = getRepository(Delivery);
     deliverymenRepo = getRepository(User);
-
-    container.registerSingleton('UsersConfig', UsersConfig);
-
-    container.registerSingleton<IJwtProvider>(
-      'JwtProvider',
-      JsonWebTokenProvider,
-    );
 
     token = createToken({ role: 'admin' });
   });

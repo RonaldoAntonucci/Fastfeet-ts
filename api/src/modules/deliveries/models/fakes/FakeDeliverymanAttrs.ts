@@ -9,6 +9,7 @@ export default (attrs: Partial<DeliverymanModel> = {}): DeliverymanModel => {
   deliveryman.name = faker.name();
   deliveryman.email = faker.email();
   deliveryman.cpf = faker.cpf();
+  deliveryman.password = faker.string({ length: 10, numeric: true });
 
   Object.assign(deliveryman, attrs);
   deliveryman.role = 'deliveryman';
